@@ -13,14 +13,14 @@ namespace SmartRecipies.Backend.Controllers
     [Produces("application/json")]
     public class RecipesController : Controller
     {
-        private static List<Recipe> Recipies;
+        private static List<Recipe> Recipes;
         private static int CurrentIdentity;
 
         public RecipesController()
         {
-            if (Recipies == null)
+            if (Recipes == null)
             {
-                Recipies = new List<Recipe>();
+                Recipes = new List<Recipe>();
                 CurrentIdentity = 0;
             }
         }
@@ -29,7 +29,7 @@ namespace SmartRecipies.Backend.Controllers
         [ProducesResponseType(typeof(List<Recipe>), 200)]
         public IActionResult Get([FromQuery]string query)
         {
-            var data = (string.IsNullOrEmpty(query) ? Recipies : Recipies.Where(f => f.Name.Contains(query)))
+            var data = (string.IsNullOrEmpty(query) ? Recipes : Recipes.Where(f => f.Name.Contains(query)))
                 .OrderBy(o => o.Name);
 
             return Ok(data);
@@ -40,7 +40,7 @@ namespace SmartRecipies.Backend.Controllers
         [ProducesResponseType(404)]
         public IActionResult GetById(int id)
         {
-            var data = Recipies.FirstOrDefault(f => f.Id == id);
+            var data = Recipes.FirstOrDefault(f => f.Id == id);
 
             if (data == null)
             {
@@ -76,7 +76,7 @@ namespace SmartRecipies.Backend.Controllers
                 return BadRequest();
             }
 
-            var data = Recipies.FirstOrDefault(f => f.Id == id);
+            var data = Recipes.FirstOrDefault(f => f.Id == id);
 
             if (data == null)
             {
@@ -93,7 +93,7 @@ namespace SmartRecipies.Backend.Controllers
         [ProducesResponseType(404)]
         public IActionResult Delete(int id)
         {
-            var data = Recipies.FirstOrDefault(f => f.Id == id);
+            var data = Recipes.FirstOrDefault(f => f.Id == id);
 
             if (data == null)
             {
@@ -109,22 +109,22 @@ namespace SmartRecipies.Backend.Controllers
         {
             obj.Id = ++CurrentIdentity;
 
-            Recipies.Add(obj);
+            Recipes.Add(obj);
         }
 
         private void Update(int id, Recipe obj)
         {
-            var item = Recipies.First(f => f.Id == id);
+            var item = Recipes.First(f => f.Id == id);
 
-            Recipies.Remove(item);
-            Recipies.Add(obj);
+            Recipes.Remove(item);
+            Recipes.Add(obj);
         }
 
         private void Remove(int id)
         {
-            var item = Recipies.First(f => f.Id == id);
+            var item = Recipes.First(f => f.Id == id);
 
-            Recipies.Remove(item);
+            Recipes.Remove(item);
         }
     }
 }
