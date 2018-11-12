@@ -14,18 +14,20 @@ namespace SmartRecipies.Backend.Controllers
     public class IngredientsController : Controller
     {
         private static List<Ingredient> Ingredients;
+        private static int CurrentIdentity;
 
         public IngredientsController()
         {
             if (Ingredients == null)
             {
                 Ingredients = new List<Ingredient>();
+                CurrentIdentity = 0;
             }
         }
 
         [HttpGet]
         [ProducesResponseType(typeof(List<Ingredient>), 200)]
-        public IActionResult Get(string query)
+        public IActionResult Get([FromQuery]string query)
         {
             var data = (string.IsNullOrEmpty(query) ? Ingredients : Ingredients.Where(f => f.Name.Contains(query)))
                 .OrderBy(o => o.Name);
@@ -58,6 +60,8 @@ namespace SmartRecipies.Backend.Controllers
                 return BadRequest();
             }
 
+            Add(obj);
+
             return Ok(obj);
         }
 
@@ -65,7 +69,7 @@ namespace SmartRecipies.Backend.Controllers
         [ProducesResponseType(typeof(Ingredient), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult Put(int id, [FromBody]Ingredient obj)
+        public IActionResult Put([FromRoute]int id, [FromBody]Ingredient obj)
         {
             if (!ModelState.IsValid)
             {
@@ -84,7 +88,7 @@ namespace SmartRecipies.Backend.Controllers
             return Ok(obj);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:int}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public IActionResult Delete(int id)
@@ -96,13 +100,15 @@ namespace SmartRecipies.Backend.Controllers
                 return NotFound();
             }
 
-            Delete(id);
+            Remove(id);
 
             return Ok();
         }
 
         private void Add(Ingredient obj)
         {
+            obj.Id = ++CurrentIdentity;
+
             Ingredients.Add(obj);
         }
 
