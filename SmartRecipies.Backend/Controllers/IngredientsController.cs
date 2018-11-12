@@ -22,6 +22,7 @@ namespace SmartRecipies.Backend.Controllers
             {
                 Ingredients = new List<Ingredient>();
                 CurrentIdentity = 0;
+                Seed();
             }
         }
 
@@ -125,6 +126,25 @@ namespace SmartRecipies.Backend.Controllers
             var item = Ingredients.First(f => f.Id == id);
 
             Ingredients.Remove(item);
+        }
+
+        private void Seed()
+        {
+            Add(new Ingredient { Name = "Queijo parmesão" });
+            Add(new Ingredient { Name = "Queijo provolone" });
+            Add(new Ingredient { Name = "Farinha de trigo" });
+            Add(new Ingredient { Name = "Tomate" });
+            Add(new Ingredient { Name = "Água" });
+            Add(new Ingredient { Name = "Fermento biológico" });
+            Add(new Ingredient { Name = "Orégano" });
+            Add(new Ingredient { Name = "Molho de tomate" });
+            Add(new Ingredient { Name = "Quejo mussarela" });
+            Add(new Ingredient { Name = "Presunto" });
+            Add(new Ingredient { Name = "Massa fresca para lasanha" });
+            Add(new Ingredient { Name = "Carne moída" });
+            Add(new Ingredient { Name = "Brócolis" });
+            Add(new Ingredient { Name = "Creme de leite" });
+            Add(new Ingredient { Name = "Sal" });
         }
     }
 }
