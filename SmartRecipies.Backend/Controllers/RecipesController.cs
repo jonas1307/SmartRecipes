@@ -35,6 +35,45 @@ namespace SmartRecipies.Backend.Controllers
             return Ok(data);
         }
 
+        [HttpGet("{id:int}/ingredients")]
+        [ProducesResponseType(typeof(List<Ingredient>), 200)]
+        [ProducesResponseType(404)]
+        public IActionResult GetIngredientsFromRecipe([FromRoute]int id)
+        {
+            var data = Recipes.FirstOrDefault(f => f.Id == id);
+
+            if (data == null)
+                return NotFound();
+
+            return Ok(data.Ingredients);
+        }
+
+        [HttpGet("ingredients/{id:int}")]
+        [ProducesResponseType(typeof(List<Recipe>), 200)]
+        [ProducesResponseType(404)]
+        public IActionResult GetRecipesByIngredientId([FromRoute]int id)
+        {
+            var data = Recipes.Where(f => f.Ingredients.Any(a => a.Id == id));
+
+            if (data == null)
+                return NotFound();
+
+            return Ok(data);
+        }
+
+        [HttpGet("ingredients/{name}")]
+        [ProducesResponseType(typeof(List<Recipe>), 200)]
+        [ProducesResponseType(404)]
+        public IActionResult GetRecipesByIngredientName([FromRoute]string name)
+        {
+            var data = Recipes.Where(f => f.Ingredients.Any(a => a.Name == name));
+
+            if (data == null)
+                return NotFound();
+
+            return Ok(data);
+        }
+
         [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(Recipe), 200)]
         [ProducesResponseType(404)]
